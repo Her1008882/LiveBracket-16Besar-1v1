@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08090d">
+<title>TOURNAMENT BY 1 MM — Los Illuminados</title>
+<style>
+:root{
+  --bg:#07080c;--panel:#101219;--panel2:#151821;--line:#2a2e39;
+  --text:#f4f5f7;--muted:#9da3af;--accent:#e9e9e9;--gold:#d7b45a;
+  --green:#59d68b;--red:#ff6678;--shadow:0 18px 55px rgba(0,0,0,.45)
+}
+*{box-sizing:border-box}
+body{margin:0;background:
+ radial-gradient(circle at 50% -10%,rgba(255,255,255,.10),transparent 32%),
+ linear-gradient(135deg,#05060a,#101219 45%,#05060a);
+ color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;min-height:100vh}
+button,input{font:inherit}
+.top{position:sticky;top:0;z-index:20;background:rgba(5,6,10,.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.nav{max-width:1500px;margin:auto;padding:14px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;margin-right:auto}
+.brand img{width:46px;height:46px;object-fit:cover;border-radius:12px;border:1px solid #555;box-shadow:0 0 20px rgba(255,255,255,.12)}
+.brand strong{display:block;font-size:14px;letter-spacing:1.5px}.brand span{font-size:11px;color:var(--muted)}
+.btn{border:1px solid var(--line);background:#151821;color:var(--text);padding:10px 13px;border-radius:10px;cursor:pointer;transition:.2s}
+.btn:hover{transform:translateY(-1px);border-color:#666;background:#1b1f29}
+.btn.primary{background:#eee;color:#07080c;border-color:#eee;font-weight:800}
+.btn.danger{color:#ff9ba7}
+.file-btn{position:relative;overflow:hidden}.file-btn input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.wrap{max-width:1500px;margin:auto;padding:26px 20px 60px}
+.hero{text-align:center;margin:10px auto 26px}
+.hero h1{margin:0;font-size:clamp(24px,4vw,44px);letter-spacing:2px}
+.hero p{color:var(--muted);margin:8px 0 0}.hero .tag{display:inline-block;margin-top:13px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;font-size:11px;letter-spacing:1px}
+.controls{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin:18px 0 25px}
+.music{max-width:560px;margin:0 auto 22px;padding:12px;border:1px solid var(--line);background:rgba(16,18,25,.78);border-radius:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.music small{color:var(--muted);flex:1;min-width:180px}.music audio{width:100%;height:34px}
+.bracket-scroll{overflow-x:auto;padding-bottom:15px}
+.bracket{min-width:1240px;display:grid;grid-template-columns:repeat(4,1fr);gap:26px;align-items:center}
+.round{display:flex;flex-direction:column;gap:20px}
+.round-title{text-align:center;color:#d6d9df;font-weight:900;letter-spacing:2px;font-size:12px;margin-bottom:2px}
+.round-sub{text-align:center;color:#777f8e;font-size:10px;margin-top:-13px}
+.match{background:linear-gradient(145deg,#12151d,#0d0f15);border:1px solid var(--line);border-radius:14px;padding:9px;box-shadow:var(--shadow);position:relative}
+.team{display:flex;align-items:center;gap:7px;padding:9px 7px;border-radius:8px;cursor:pointer;transition:.15s}
+.team:hover{background:#191d27}
+.team.winner{background:#20251f;outline:1px solid rgba(89,214,139,.45)}
+.team.loser{opacity:.42}
+.team .seed{width:20px;color:#697181;font-size:10px;text-align:center}.team .name{flex:1;font-weight:750;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.team .status{font-size:9px;color:var(--green);font-weight:900}.team .status.loss{color:var(--red)}
+.vs{height:1px;background:#252a34;margin:1px 7px}
+.edit-row{display:flex;gap:6px;margin-top:6px}.edit-row input{min-width:0;flex:1;background:#090b10;color:#fff;border:1px solid #252a34;border-radius:7px;padding:6px 7px;font-size:10px}
+.small{font-size:9px;color:#6f7684}
+.champion{min-height:240px;display:flex;align-items:center;justify-content:center}
+.trophy{font-size:50px;text-align:center;margin-bottom:8px}
+.champ-card{width:100%;max-width:280px;text-align:center;border:1px solid #5a5139;background:linear-gradient(145deg,#19170f,#0e0f14);padding:22px;border-radius:18px;box-shadow:0 0 50px rgba(215,180,90,.12)}
+.champ-name{font-size:23px;font-weight:950;letter-spacing:1px;word-break:break-word}
+.champ-label{color:var(--gold);font-size:11px;letter-spacing:3px;font-weight:900}
+.help{margin:30px auto 0;max-width:900px;color:#8e95a3;text-align:center;font-size:12px;line-height:1.7}
+.footer{text-align:center;color:#5e6572;font-size:10px;margin-top:40px}
+@media(max-width:700px){.nav{padding:10px}.wrap{padding:18px 12px 45px}.brand{width:100%}.brand img{width:40px;height:40px}.controls .btn{flex:1}.hero h1{font-size:25px}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="nav">
+    <div class="brand">
+      <img src="assets/logo.jpg" alt="Los Illuminados">
+      <div><strong>LOS ILLUMINADOS</strong><span>MLBB TOURNAMENT BRACKET</span></div>
+    </div>
+    <button class="btn" id="saveBtn">💾 Simpan</button>
+    <button class="btn" id="loadBtn">↻ Muat</button>
+    <button class="btn" id="resetBtn">Reset</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1>TOURNAMENT BY 1 MM</h1>
+    <p>Babak 16 Besar → 8 Besar → Semifinal → Final → JUARA 1</p>
+    <div class="tag">EDITABLE • AUTO ADVANCE • LOCAL SAVE</div>
+  </section>
+
+  <div class="controls">
+    <button class="btn primary" id="editMode">✏️ Edit Nama Tim</button>
+    <label class="btn file-btn">🎵 Tambah Musik
+      <input id="musicFile" type="file" accept="audio/*">
+    </label>
+    <button class="btn" id="playBtn">▶ Putar Musik</button>
+    <button class="btn" id="clearMusic">× Hapus Musik</button>
+  </div>
+
+  <div class="music">
+    <small id="musicName">PAMBA PUSING (HARMOKO SQUAD) — DJ LOVE</small>
+    <audio id="audio" controls loop src="assets/music.mp3"></audio>
+  </div>
+
+  <div class="bracket-scroll">
+    <section class="bracket" id="bracket"></section>
+  </div>
+
+  <div class="help">
+    <b>Cara pakai:</b> klik nama tim untuk menentukan pemenang pertandingan. Pemenang otomatis masuk ke babak berikutnya.
+    Aktifkan <b>Edit Nama Tim</b> untuk mengganti nama peserta. Data tersimpan di browser perangkat ini.
+    Musik hanya tersimpan selama halaman/browser masih memiliki file tersebut; untuk publikasi, tambahkan file audio sendiri ke folder website.
+  </div>
+  <div class="footer">LOS ILLUMINADOS • MLBB TOURNAMENT SYSTEM</div>
+</main>
+
+<script>
+const KEY='li_mlbb_bracket_v1';
+let state = {
+  names: Array.from({length:16},(_,i)=>`TEAM ${String(i+1).padStart(2,'0')}`),
+  winners: {r16:Array(8).fill(null),qf:Array(4).fill(null),sf:Array(2).fill(null),final:null},
+  edit:false
+};
+let musicURL=null;
+
+function fresh(){state={names:Array.from({length:16},(_,i)=>`TEAM ${String(i+1).padStart(2,'0')}`),winners:{r16:Array(8).fill(null),qf:Array(4).fill(null),sf:Array(2).fill(null),final:null},edit:false};}
+function getPair(round,i){
+  if(round===0)return [state.names[i*2],state.names[i*2+1]];
+  const prev=round===1?state.winners.r16:round===2?state.winners.qf:state.winners.sf;
+  return [prev[i*2]||'—',prev[i*2+1]||'—'];
+}
+function pick(round,i,team){
+  if(!team||team==='—')return;
+  const key=['r16','qf','sf','final'][round];
+  state.winners[key][i]=team;
+  // clear all downstream results when a prior result changes
+  if(round===0){state.winners.qf[Math.floor(i/2)]=null;state.winners.sf[Math.floor(Math.floor(i/2)/2)]=null;state.winners.final=null}
+  if(round===1){state.winners.sf[Math.floor(i/2)]=null;state.winners.final=null}
+  if(round===2){state.winners.final=null}
+  render();
+}
+function matchHTML(round,i){
+  const pair=getPair(round,i), key=['r16','qf','sf','final'][round], win=state.winners[key][i];
+  return `<div class="match">
+    <div class="team ${win===pair[0]?'winner':(win&&win!==pair[0]?'loser':'')}" onclick="pick(${round},${i},'${esc(pair[0])}')">
+      <span class="seed">${i*2+1}</span><span class="name">${esc(pair[0])}</span>${win===pair[0]?'<span class="status">WIN</span>':''}
+    </div>
+    <div class="vs"></div>
+    <div class="team ${win===pair[1]?'winner':(win&&win!==pair[1]?'loser':'')}" onclick="pick(${round},${i},'${esc(pair[1])}')">
+      <span class="seed">${i*2+2}</span><span class="name">${esc(pair[1])}</span>${win===pair[1]?'<span class="status">WIN</span>':''}
+    </div>
+    ${round===0&&state.edit?`<div class="edit-row"><input data-name="${i*2}" value="${esc(state.names[i*2])}" aria-label="Nama tim"><input data-name="${i*2+1}" value="${esc(state.names[i*2+1])}" aria-label="Nama tim"></div>`:''}
+  </div>`;
+}
+function render(){
+  const root=document.getElementById('bracket');
+  const rounds=[
+    {title:'16 BESAR',sub:'ROUND OF 16',count:8},
+    {title:'8 BESAR',sub:'QUARTER FINAL',count:4},
+    {title:'SEMIFINAL',sub:'TOP 4',count:2},
+    {title:'FINAL',sub:'GRAND FINAL',count:1}
+  ];
+  root.innerHTML=rounds.map((r,ri)=>{
+    let content=`<div class="round"><div><div class="round-title">${r.title}</div><div class="round-sub">${r.sub}</div></div>`;
+    for(let i=0;i<r.count;i++)content+=matchHTML(ri,i);
+    content+='</div>';
+    return content;
+  }).join('')+`
+  <div class="round champion">
+    <div class="champ-card">
+      <div class="trophy">🏆</div>
+      <div class="champ-label">JUARA 1</div>
+      <div class="champ-name">${esc(state.winners.final||'BELUM DITENTUKAN')}</div>
+      <div class="small" style="margin-top:10px">Klik pemenang di Final untuk menetapkan juara.</div>
+    </div>
+  </div>`;
+  root.querySelectorAll('input[data-name]').forEach(inp=>inp.addEventListener('change',e=>{
+    const n=+e.target.dataset.name; state.names[n]=e.target.value.trim()||`TEAM ${String(n+1).padStart(2,'0')}`;
+    // reset bracket because participants changed
+    state.winners={r16:Array(8).fill(null),qf:Array(4).fill(null),sf:Array(2).fill(null),final:null};
+    render();
+  }));
+}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+window.pick=pick;
+
+document.getElementById('editMode').onclick=()=>{state.edit=!state.edit;document.getElementById('editMode').textContent=state.edit?'✅ Selesai Edit':'✏️ Edit Nama Tim';render()};
+document.getElementById('saveBtn').onclick=()=>{localStorage.setItem(KEY,JSON.stringify(state));alert('Bracket tersimpan di browser perangkat ini.')};
+document.getElementById('loadBtn').onclick=()=>{try{const x=JSON.parse(localStorage.getItem(KEY));if(x){state=x;render();alert('Bracket dimuat.')}}catch(e){alert('Data simpan tidak valid.')}};
+document.getElementById('resetBtn').onclick=()=>{if(confirm('Reset semua nama dan hasil pertandingan?')){fresh();render()}};
+
+const audio=document.getElementById('audio'), musicName=document.getElementById('musicName');
+document.getElementById('musicFile').addEventListener('change',e=>{
+ const f=e.target.files[0];if(!f)return;
+ if(musicURL)URL.revokeObjectURL(musicURL);
+ musicURL=URL.createObjectURL(f);audio.src=musicURL;musicName.textContent='Musik: '+f.name;
+ audio.play().catch(()=>{});
+});
+document.getElementById('playBtn').onclick=()=>{if(audio.src)audio.paused?audio.play():audio.pause();else alert('Tambahkan file musik terlebih dahulu.')};
+document.getElementById('clearMusic').onclick=()=>{audio.pause();audio.removeAttribute('src');musicName.textContent='PAMBA PUSING (HARMOKO SQUAD) — DJ LOVE';if(musicURL)URL.revokeObjectURL(musicURL);musicURL=null};
+
+render();
+</script>
+</body>
+</html>
